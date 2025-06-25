@@ -12,7 +12,15 @@ class ClienteController
 
     public function index()
     {
-        $clientes = $this->cliente->listar();
+        $pagina = $_GET['pagina'] ?? 1;
+        $limite = $_GET['limite'] ?? 5;
+        $busca = $_GET['busca'] ?? '';
+        $offset = ($pagina - 1) * $limite;
+
+        $clientes = $this->cliente->listarPaginado($limite, $offset, $busca);
+        $total = $this->cliente->contar($busca);
+        $paginas = ceil($total / $limite);
+
         include __DIR__ . '/../views/cliente_list.php';
     }
 
@@ -26,6 +34,11 @@ class ClienteController
         $nome = $_POST['nome'];
         $email = $_POST['email'];
         $telefone = $_POST['telefone'];
+
+        if ($this->cliente->existeEmail($email)) {
+            echo "<script>alert('E-mail já cadastrado!'); location.href='index.php?action=create';</script>";
+            exit;
+        }
 
         $foto = '';
         if (!empty($_FILES['foto']['name'])) {
@@ -57,6 +70,11 @@ class ClienteController
         $nome = $_POST['nome'];
         $email = $_POST['email'];
         $telefone = $_POST['telefone'];
+
+        if ($this->cliente->existeEmail($email, $id)) {
+            echo "<script>alert('E-mail já cadastrado para outro cliente!'); location.href='index.php?action=edit&id=$id';</script>";
+            exit;
+        }
 
         $clienteAtual = $this->cliente->buscar($id);
         $foto = $clienteAtual['foto'];
