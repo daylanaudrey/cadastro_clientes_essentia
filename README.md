@@ -1,67 +1,96 @@
+Sistema de Cadastro de Clientes - Essentia
+==========================================
 
-DOCUMENTAÇÃO DO SISTEMA DE CADASTRO DE CLIENTES (PHP + jQuery + MVC)
+Este projeto é um pequeno sistema web em PHP puro com padrão MVC, utilizando jQuery, Bootstrap 5 e MySQL, com objetivo de cadastrar e gerenciar clientes. O sistema conta com formulário para inclusão e edição, listagem com miniatura da foto do cliente, filtro dinâmico, paginação com controle de quantidade por página e máscara de telefone.
 
-Requisitos
-- PHP 7.4+ ou 8.x
-- MySQL/MariaDB
-- Servidor local: MAMP, XAMPP, WAMP ou LAMP
-- Navegador moderno (Chrome, Firefox etc.)
+FUNCIONALIDADES
+---------------
+- Cadastro de clientes com os campos:
+  - Nome
+  - E-mail (único)
+  - Telefone (apenas números salvos no banco)
+  - Foto (com preview e ampliação)
+- Edição de clientes
+- Exclusão de clientes (com remoção da imagem no servidor)
+- Máscara para telefone no formulário (formato: (00) 00000-0000)
+- Validação de formato da imagem (jpg, jpeg, png, webp)
+- Listagem com:
+  - Miniatura clicável da foto
+  - Paginação dinâmica
+  - Filtro em tempo real por nome, e-mail ou telefone (ignora máscara)
+  - Controle da quantidade de registros por página
+- Interface responsiva com Bootstrap 5
 
-Estrutura de Pastas
-clientes/
-├── app/
-│   ├── config.php              # Conexão com banco de dados
-│   ├── controllers/
-│   ├── models/
-│   └── views/
-├── public/
-│   ├── uploads/                # Pasta onde as imagens são salvas
-│   └── index.php               # Ponto de entrada do sistema
+TECNOLOGIAS
+-----------
+- PHP 8.x
+- MySQL
+- jQuery
+- Bootstrap 5
+- HTML5 + CSS3
+- JavaScript (vanilla + jQuery)
+- Arquitetura MVC simples
 
-1. Criar o banco de dados
+ESTRUTURA DO PROJETO
+---------------------
+/public
+  index.php            # Front controller
+  /uploads             # Fotos dos clientes
 
-No phpMyAdmin ou via linha de comando MySQL:
+/app
+  /controllers
+    ClienteController.php
+  /models
+    Cliente.php
+  /views
+    cliente_form.php
+    cliente_list.php
+  config.php           # Conexão com o banco de dados
 
-CREATE DATABASE cadastro_clientes CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE cadastro_clientes;
+/db
+  script.sql           # Script de criação da tabela
 
-CREATE TABLE clientes (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  nome VARCHAR(255) NOT NULL,
-  email VARCHAR(255) NOT NULL,
-  telefone VARCHAR(20) NOT NULL,
-  foto VARCHAR(255)
-);
+REQUISITOS
+----------
+- PHP 8.x (testado com MAMP)
+- MySQL
+- Servidor local (MAMP, XAMPP, LAMP, etc.)
+- Composer (opcional)
 
-2. Configurar conexão com o banco
+INSTALAÇÃO
+----------
+1. Clone este repositório:
+   git clone https://github.com/daylanaudrey/cadastro_clientes_essentia.git
 
-Abra o arquivo app/config.php e edite conforme seu ambiente:
+2. Coloque a pasta dentro da sua pasta pública do servidor local (ex: htdocs ou Sites/localhost).
 
-$host = "localhost";
-$db   = "cadastro_clientes";
-$user = "root";
-$pass = "root"; // ou senha em branco no XAMPP
+3. Crie o banco de dados:
+   - Nome do banco: cadastro_clientes
+   - Execute o script SQL abaixo:
 
-3. Executar o sistema
+SCRIPT SQL
+----------
+CREATE TABLE `clientes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nome` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL UNIQUE,
+  `telefone` varchar(20) NOT NULL,
+  `foto` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-Acesse via navegador:
-http://localhost/clientes/public/
+4. Ajuste o arquivo app/config.php se necessário com as credenciais do seu MySQL.
 
-Use o botão "Novo Cliente" para cadastrar.
-As imagens serão exibidas em miniatura e clicáveis.
-Pode editar, excluir e a imagem anterior será automaticamente removida do servidor.
+5. Acesse via navegador:
+   http://localhost/cadastro_clientes_essentia/public/
 
-4. Uploads de imagem
+OBSERVAÇÕES
+-----------
+- A pasta public/uploads precisa ter permissão de escrita.
+- Ao editar a foto, a anterior será removida do servidor.
+- E-mails duplicados não são permitidos.
+- Telefones são armazenados sem máscara no banco e exibidos com máscara formatada na listagem.
 
-- As imagens devem ser dos tipos: .jpg, .jpeg, .png, .webp
-- São salvas em: public/uploads/
-- Validação de extensão feita no front-end (HTML) e no back-end (PHP)
-- Ao editar e trocar, a anterior é removida
-
-Funcionalidades
-
-- Cadastro, edição e exclusão de clientes
-- Upload de imagem com preview em miniatura
-- Máscara e validação de telefone com jQuery
-- Padrão MVC simples (Model / View / Controller)
-- Interface com Bootstrap 5
+AUTOR
+-----
+Desenvolvido por Daylan Audrey Gerhardt (https://github.com/daylanaudrey)
