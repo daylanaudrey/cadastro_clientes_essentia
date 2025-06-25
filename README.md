@@ -47,9 +47,6 @@ ESTRUTURA DO PROJETO
     cliente_list.php
   config.php           # Conexão com o banco de dados
 
-/db
-  script.sql           # Script de criação da tabela
-
 REQUISITOS
 ----------
 - PHP 8.x (testado com MAMP)
