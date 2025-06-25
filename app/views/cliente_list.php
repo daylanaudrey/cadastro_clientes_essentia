@@ -33,6 +33,7 @@
         </thead>
         <tbody>
             <?php foreach($clientes as $c): ?>
+
                 <tr>
                     <td>
                         <?php if($c['foto']): ?>
