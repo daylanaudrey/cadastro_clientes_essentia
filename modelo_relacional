@@ -1,0 +1,16 @@
+MODELO RELACIONAL – CADASTRO DE CLIENTES
+
+TABELA: clientes
+----------------
+id             INT          PK, AUTO_INCREMENT
+nome           VARCHAR(100) NOT NULL
+email          VARCHAR(100) NOT NULL, UNIQUE
+telefone       VARCHAR(20)  NOT NULL
+foto           VARCHAR(255) NULL
+created_at     DATETIME     DEFAULT CURRENT_TIMESTAMP
+updated_at     DATETIME     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+
+OBSERVAÇÕES:
+- O campo 'foto' armazena o nome do arquivo no diretório 'uploads/'.
+- O campo 'telefone' é armazenado sem formatação (apenas dígitos).
+- Validação no sistema garante e-mail único e campos obrigatórios.
